@@ -17,9 +17,6 @@ app.use(express.json());
 //****** REQUESTS ******//
 app.use('/api/users', users);
 
-// app.get('/api', (req, res) => {
-//   res.send('hello world from the server');
-// });
 
 //****** ERROR HANDLERS ******//
 

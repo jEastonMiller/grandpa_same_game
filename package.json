@@ -7,14 +7,17 @@
   "scripts": {
     "start": "webpack-dev-server --mode development --open --hot",
     "start-server": "nodemon ./server/server.js",
+    "dev-test": "node ./server/server.js webpack-dev-server --mode production",
     "dev": "concurrently --kill-others \"npm run start\" \"npm run start-server\"",
-    "build": "webpack --mode production"
+    "build": "webpack --mode production",
+    "test": ""
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "express": "^4.18.2",
+    "nodemon": "^2.0.21",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router": "^6.8.2",
