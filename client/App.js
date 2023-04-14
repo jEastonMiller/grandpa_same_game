@@ -1,7 +1,10 @@
 import React, { useState, useEffect, Fragment } from 'react';
-import styles from './App.css'
 
-import { BrowserRouter as Router, Route } from "react-router-dom";
+
+import { Toolbar, WindowsBar } from './components/components.js';
+import MainContainer, { mainContainer } from './containers/MainContainer.js';
+
+
 
 function App () {
   const [test, setTest] = useState(`didn't work :((`)
@@ -20,12 +23,16 @@ function App () {
     }
   }, [])
 
+
+  //flex justify-center items-center h-screen
+  //flex flex-col justify-between items-center content-between
+
   return (
-    <Router>
-      <div>
-        <h1>{test}</h1>
-      </div>
-    </Router>
+    <div className='flex flex-col justify-center items-center h-screen' >
+        <Toolbar />
+        <MainContainer />
+        <WindowsBar />
+    </div>
   )
 }
 
