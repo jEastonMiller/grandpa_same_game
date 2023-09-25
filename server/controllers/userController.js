@@ -15,7 +15,6 @@ userController.cookieChecker = async function (req, res, next) {
       const addUserQuery = `INSERT INTO users ( highscores, usercode) VALUES ('[]', $1)`;
       const newUser = await db.query(addUserQuery, usercodeGen);
       res.locals.test = newUser;
-      console.log(Date.now())
       res.cookie(
         'user', 
         usercodeGen.toString(), 
