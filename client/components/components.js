@@ -1,15 +1,21 @@
 import Block from "./Block";
 import ScoreFooter from "./ScoreFooter";
+import MenuItems from "./MenuItems";
+import Dropdown from "./Dropdown";
+import NavBar from "./NavBar";
 import Toolbar from "./Toolbar";
 import WindowsBar from "./WindowsBar";
-import GameWindowMenu from "./GameWindowMenu"
+import Shortcut from "./Shortcut";
 import GameToolbar from "./GameToolbar";
 
 export {
   Block,
   ScoreFooter,
+  MenuItems,
+  Dropdown,
+  NavBar,
   Toolbar,
   WindowsBar,
-  GameWindowMenu,
+  Shortcut,
   GameToolbar
 }

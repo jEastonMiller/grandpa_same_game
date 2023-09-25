@@ -1,7 +1,10 @@
 const express = require('express');
 const path = require('path');
+const cookieParser = require('cookie-parser');
+const db = require('./models/models')
 
 const app = express();
+app.use(cookieParser())
 
 //****** ROUTES ******//
 const users = require('./routes/usersRouter')
@@ -15,7 +18,7 @@ app.use(express.json());
 
 
 //****** REQUESTS ******//
-app.use('/api/users', users);
+app.use('/api', users);
 
 
 //****** ERROR HANDLERS ******//
@@ -34,5 +37,10 @@ app.use( (err, req, res, next) => {
 })
 
 app.listen(PORT, () => {
+  if (db){ 
+    console.log('database connection successful')
+} else { 
+  console.log('database connection unsuccessful')
+}
   console.log(`server listening on PORT:${PORT}`)
 });

@@ -2,21 +2,21 @@ import React, { useState, useEffect } from 'react';
 import downArrow from '../assets/down_arrow.png'
 
 
-function GameToolbar ({ height, width }) {
+function GameToolbar ({ height, width, fontSize }) {
 
   return (
     <div 
     className='gameToolbar'
     style={{
       width: width,
-      height: `${height}px`,
+      height: height,
       border: '1px solid rgba(0, 0, 0, 1.0)',
       display: 'flex',
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
       backgroundColor: 'hsl(240, 100%, 38%)',
-      fontSize: `${height * 0.5}px`,
+      fontSize: fontSize,
     }} >
       <div  
         style={
@@ -43,8 +43,8 @@ function GameToolbar ({ height, width }) {
             strokeLinecap="round"
             strokeWidth={height * 0.04}
             stroke='rgba(0, 0, 0, 1.0)'
-            fill='rgba(255, 255, 255, 1.0'
-           
+            fill='rgba(255, 255, 255, 1.0)'
+            transform= 'translate(5 10)'
           />
         </svg>
       </div>

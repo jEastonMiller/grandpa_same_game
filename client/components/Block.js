@@ -18,7 +18,7 @@ function Block ({ key, x, y, textColor, val, color, handleMatchClick, boardSize,
   }, [height])
 
   useEffect(() => {
-    console.log('new block: ', val)
+    
   
   }, [])
 
@@ -38,8 +38,10 @@ function Block ({ key, x, y, textColor, val, color, handleMatchClick, boardSize,
       }
       style={{
         boxSizing: 'border-box',
-        height: blockSize,
-        width: blockSize,
+        height: '100%',
+        width: '100%',
+        gridColumn: x + 1,
+        gridRow: y + 1,
       }}
     >
 
@@ -67,11 +69,13 @@ function Block ({ key, x, y, textColor, val, color, handleMatchClick, boardSize,
       style={{
         boxSizing: 'border-box',
         backgroundColor: color,
-        borderWidth: blockSize * 0.085,
+        borderWidth: '0.2em',
         borderStyle: 'outset',
         borderColor: 'hsl(0, 0%, 76%)',
-        height: blockSize,
-        width: blockSize,
+        height: '100%',
+        width: '100%',
+        gridColumn: x + 1,
+        gridRow: y + 1,
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center'
@@ -81,7 +85,7 @@ function Block ({ key, x, y, textColor, val, color, handleMatchClick, boardSize,
         className='block'
         style={{
         color: textColor,
-        fontSize: 0.7 * blockSize,
+        fontSize: '1.9em',
         }}
       >{val}</h1>
     </div>

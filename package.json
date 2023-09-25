@@ -6,21 +6,25 @@
   "proxy": "http://localhost:3000",
   "scripts": {
     "start": "webpack-dev-server --mode development --open --hot",
-    "start-server": "nodemon ./server/server.js",
+    "start-server": " nodemon ./server/server.js",
     "dev-test": "node ./server/server.js webpack-dev-server --mode production",
     "dev": "concurrently --kill-others \"npm run start\" \"npm run start-server\"",
-    "build": "webpack --mode production",
+    "build": " webpack --mode production",
     "test": ""
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cookie-parser": "^1.4.6",
+    "dotenv-webpack": "^8.0.1",
     "express": "^4.18.2",
     "nodemon": "^2.0.21",
+    "pg": "^8.11.3",
     "postcss-loader": "^7.2.4",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-dotenv": "^0.1.3"
   },
   "devDependencies": {
     "@babel/core": "^7.21.0",

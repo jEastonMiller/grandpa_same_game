@@ -3,19 +3,17 @@ import useWindowDimensions from '../components/windowSizeHook';
 
 import { Block, GameToolbar, GameWindowMenu, ScoreFooter } from '../components/components'
 
-function MainContainer () {
-  const [gameWidth, setGameWidth] = useState(null);
-  const [gameHeight, setGameHeight] = useState(null);
+function MainContainer ( { height, width, fontSize, mark, point, score, setMark, setScore, setPoint }) {
+  const [gameWidth, setGameWidth] = useState(width);
+  const [gameHeight, setGameHeight] = useState(height);
   const [startMatrix, setStartMatrix] = useState(null);
   const [blocks, setBlocks] = useState([]);
   const [matrix, setMatrix] = useState([]);
   const [matrixUpdate, setMatrixUpdate] = useState(false);
-  const [score, setScore] = useState(0);
-  const [mark, setMark] = useState(0);
-  const [point, setPoint] = useState('(POINT :   0)')
   const [boardSize, setBoardSize] = useState(10);
   const [coordCacheStore, setCoordCacheStore] = useState(null);
-  const { height, width } = useWindowDimensions();
+  const [matchesRemaining, setMatchesRemaining] = useState(false);
+  // const { height, width } = useWindowDimensions();
 
 
   // initialize block list
@@ -52,22 +50,9 @@ function MainContainer () {
     }
     console.log('blocks: ', blocks)
   }, [matrixUpdate])
-  
-  // update board size
-  useEffect(() => {
-    if ( height / width > (boardSize * 100) / 2000 ) {
-      setGameWidth(width - 75);
-      setGameHeight( (width - 75) * ( ( boardSize * 100) / 2000 ) );
-    } else {
-      setGameHeight( height - 150 );
-      setGameWidth( ( height - 150 ) * ( 2000 / ( boardSize * 100 ) ) );;
-    }
-  }, [height])
 
   // handle match click and score
   const handleMatchClick = (xCoord, yCoord, letter) => {
-
-
     const initCoord = {};
     initCoord[yCoord] = xCoord;
     let  coordCache = []
@@ -114,8 +99,6 @@ function MainContainer () {
     //const addedScore = Math.floor(( ( coordCache.length ) ** 3 ) / 3 - (coordCache.length ** 2) / 2 + coordCache.length / 6 + 1);
     let addedScore;
     
-
-    
     // preview selection on first click
     if (!coordCacheStore) {
       // recurse to traverse
@@ -140,7 +123,45 @@ function MainContainer () {
       }
     }
 
-    
+    // check for any remaining matches
+    const handleMatchesRemaining = () => {
+      function checkHelper(x, y) {      
+        let right = x + 1;
+        let left = x - 1;
+        let down = y - 1;
+        let up = y + 1;
+        
+        let rightTraverse = {};
+        let leftTraverse = {}
+        let downTraverse = {};
+        let upTraverse = {};
+  
+        rightTraverse[y] = right;
+        leftTraverse[y] = left;
+        downTraverse[down] = x;
+        upTraverse[up] = x;
+  
+        // check if current block has a match on any side
+        if ( x !== 19 && matrix[y][x + 1].letter === letter && !coordCache.includes(JSON.stringify(rightTraverse)) ||
+           x !== 0 && matrix[y][x - 1].letter === letter && !coordCache.includes(JSON.stringify(leftTraverse)) && leftTraverse ||
+           y !== 0 && matrix[y - 1][x].letter === letter && !coordCache.includes(JSON.stringify(downTraverse)) ||
+           y !== boardSize - 1 && matrix[y + 1][x].letter === letter && !coordCache.includes(JSON.stringify(upTraverse))
+           ) {
+          return true;
+        } 
+        
+        return false;
+      }
+  
+      for(let i = 0; i < boardSize; i++){
+        for(let n = 0; n < 20; n++) {
+          if(checkHelper(n, i)) return true;
+        }
+        return false;
+      };
+  
+    }
+
     // confirm selection
     if (coordCacheStore) {
       addedScore = Math.floor((coordCacheStore.length - 2) ** 2);
@@ -183,6 +204,8 @@ function MainContainer () {
           }
         }
       }
+
+      setMatchesRemaining(handleMatchesRemaining())
       setMatrix(newMatrix);
       setMatrixUpdate(!matrixUpdate);
     }
@@ -210,22 +233,82 @@ function MainContainer () {
   }
 
   
-  return (
-    <div>
-      <GameToolbar height={gameHeight / 20} width={gameWidth} />
-      <GameWindowMenu height={gameHeight / 20} width={gameWidth} />
-      <div 
-      className='flex flex-wrap flex-row border-1 border-gray bg-green-600'
-        style={{
-          height: gameHeight,
-          width: gameWidth
-        }} 
-      >
-        {blocks.map(block => <Block key={`${block.x}${block.y}`} x={block.x} y={block.y} textColor={block.val.textColor} val={block.val.letter} color={block.val.color} boardSize={boardSize} coordCacheStore={coordCacheStore} handleMatchClick={handleMatchClick} handleDeselect={handleDeselect}/>)}
+  if (matchesRemaining) {
+    return (
+      <div>
+        <div 
+        className='grid border-1 border-gray bg-green-600'
+          style={{
+            height: height,
+            width: width,
+            gridTemplateColumns: `repeat(20, 5%)`,
+            gridTemplateRows: `repeat(${boardSize}, ${100 / boardSize}%)`,
+            fontSize: fontSize
+          }} 
+        >
+          {blocks.map(
+              block => 
+                <Block 
+                  key={`${block.x}${block.y}`} 
+                  x={block.x} 
+                  y={block.y} 
+                  textColor={block.val.textColor} 
+                  val={block.val.letter} 
+                  color={block.val.color} 
+                  boardSize={boardSize} 
+                  coordCacheStore={coordCacheStore} 
+                  handleMatchClick={handleMatchClick} 
+                  handleDeselect={handleDeselect}
+                />)}
+        </div>
       </div>
-      <ScoreFooter height={gameHeight / 20} width={gameWidth} mark={mark} point={point} score={score} />
-    </div>
-  )
+    )
+  } else {
+    return (
+      <div>
+        <div 
+        className='grid border-1 border-gray bg-green-600'
+          style={{
+            height: height,
+            width: width,
+            gridTemplateColumns: `repeat(20, 5%)`,
+            gridTemplateRows: `repeat(${boardSize}, ${100 / boardSize}%)`,
+            fontSize: fontSize
+          }} 
+        >
+          {blocks.map(
+              block => 
+                <Block 
+                  key={`${block.x}${block.y}`} 
+                  x={block.x} 
+                  y={block.y} 
+                  textColor={block.val.textColor} 
+                  val={block.val.letter} 
+                  color={block.val.color} 
+                  boardSize={boardSize} 
+                  coordCacheStore={coordCacheStore} 
+                  handleMatchClick={handleMatchClick} 
+                  handleDeselect={handleDeselect}
+                />)}
+        </div>
+        <div
+          style={
+            {
+              position: 'absolute',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }
+          }
+        >
+          <h1>Game Over</h1>
+          <h2>{score}</h2>
+        </div>
+      </div>
+    )
+  }
+  
 }
 
 export default MainContainer;
