@@ -11,14 +11,13 @@ Go ahead and:
 Currently: 
 - Game logic is all there as well as scoring based on the original game as described by the about section in the original program (although I don't think its correct and am changing the scoring equation)
 - Building out toolbar functionality and styling
-- Refactoring from tailwindCSS as its scalable based on browser size and found that tailwindCSS is not great for dynamic inputs because of how it compiles
 
 To-Do:
 - Decrease loading time
 - Finish retro desktop styling for atmosphere
 - Make assets for different "characters" 
 - Implement local storage using cookies to keep track of high scores 
-- I also need to go grocery shopping and do laundry to day or tomorrow
+- I also need to go grocery shopping and do laundry today or tomorrow
 - Deploy it
 
 Built using:
